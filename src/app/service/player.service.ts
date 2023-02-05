@@ -24,7 +24,7 @@ export class PlayerService {
 
   createPlayer(request: PlayerRequest) {
 
-    return this.http.post<PlayerRequest>(this.url, request, {responseType: 'json'}).pipe(
+    return this.http.post(this.url, request, {responseType: 'json'}).pipe(
       retry(1),
       catchError(this.errorHandler)
     );

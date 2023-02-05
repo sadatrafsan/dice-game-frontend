@@ -48,8 +48,6 @@ export class CreatePlayerComponent implements OnInit {
     this.playerRequest.name = this.name?.value;
     this.playerRequest.age = this.age?.value;
 
-    console.log(this.playerRequest);
-
     this.playerService.createPlayer(this.playerRequest).subscribe({
       next: () => {
         this.router.navigateByUrl('/');

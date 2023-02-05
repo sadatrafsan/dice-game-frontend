@@ -18,10 +18,13 @@
             <td>{{i + 1}}</td>
             <td>{{player.name}}</td>
             <td>{{player.age}}</td>
-            <td>{{player.id}}</td>
+            <td><input type="checkbox" name="participant" [value]="player.id" (change)="selectParticipants($event)" /></td>
           </tr>
         </tbody>
       </table>
+      <div *ngIf="isButtonVisible()">
+        <button *ngIf="isButtonVisible()" class="btn btn-success btn-sm" (click)="startGame()">Start Game</button>
+      </div>
     </div>
   </div>
 </div>

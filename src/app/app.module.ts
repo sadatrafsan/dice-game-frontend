@@ -8,13 +8,15 @@ import { IndexComponent } from './component/index/index.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { CreatePlayerComponent } from './component/create-player/create-player.component';
 import {HttpClientModule} from "@angular/common/http";
+import { GameComponent } from './component/game/game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     IndexComponent,
-    CreatePlayerComponent
+    CreatePlayerComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,
