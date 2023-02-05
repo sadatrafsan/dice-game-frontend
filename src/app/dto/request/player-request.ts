@@ -1,4 +1,4 @@
-export class PlayerPayload {
+export class PlayerRequest {
 
   name!: string;
   age!: number;

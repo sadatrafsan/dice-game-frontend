@@ -1,1 +1,49 @@
-<p>create-player works!</p>
+<app-header></app-header>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-4 position-absolute top-50 start-50 translate-middle">
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-center">New Player</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="playerForm" (ngSubmit)="onSubmit()">
+
+            <div class="mb-3">
+              <input type="text"
+                     formControlName="name"
+                     name="name"
+                     id="name"
+                     class="form-control form-control"
+                     placeholder="Name"
+                     required/>
+            </div>
+
+
+            <div class="mb-3">
+              <select formControlName="age"
+                      name="age"
+                      id="age"
+                      class="form-control">
+                <option selected value="" disabled>-SELECT-</option>
+                <option *ngFor="let age of ages" [value]="age">
+                  {{ age }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <button type="submit" class="btn btn-primary w-100">
+                Save
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
