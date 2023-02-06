@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, retry, throwError} from "rxjs";
 import {GameRequest} from "../dto/request/game-request";
 import {GameResponse} from "../dto/response/game-response";
+import {ScoreResponse} from "../dto/response/score-response";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,14 @@ export class GameService {
   startGame(request: GameRequest) {
 
     return this.http.post<GameResponse>(this.url, request, {responseType: 'json'}).pipe(
+      retry(1),
+      catchError(this.errorHandler)
+    );
+  }
+
+  getScoresByGameId(gameId: number) {
+
+    return this.http.get<ScoreResponse[]>(this.url + '/scores/' + gameId).pipe(
       retry(1),
       catchError(this.errorHandler)
     );

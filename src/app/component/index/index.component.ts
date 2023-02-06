@@ -4,6 +4,8 @@ import {PlayerResponse} from "../../dto/response/player-response";
 import {GameRequest} from "../../dto/request/game-request";
 import {GameService} from "../../service/game.service";
 import {GameResponse} from "../../dto/response/game-response";
+import {ScoreResponse} from "../../dto/response/score-response";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({
@@ -13,22 +15,33 @@ import {GameResponse} from "../../dto/response/game-response";
 })
 export class IndexComponent implements OnInit {
 
+  pointForm!: FormGroup;
   players: PlayerResponse[] = [];
   participants: any = []
   gameRequest!: GameRequest;
   game!: GameResponse;
+  scores: ScoreResponse[] = [];
 
   constructor(private playerService: PlayerService,
               private gameService:GameService) { }
 
   ngOnInit(): void {
+
     this.gameRequest = {
       players: [],
       highestPoint: 0
     };
+
+    this.pointForm = new FormGroup({
+      point: new FormControl('', [Validators.required])
+    });
+
     this.getPlayers();
   }
 
+  get point() {
+    return this.pointForm.get('point');
+  }
 
   private getPlayers(){
     this.playerService.getPlayers().subscribe(response => {
@@ -55,10 +68,9 @@ export class IndexComponent implements OnInit {
 
     const numberOfPlayers = this.participants.length;
 
-    this.gameRequest.highestPoint = 6;
+    this.gameRequest.highestPoint = this.point?.value;
 
     if(numberOfPlayers == 2){
-
       this.gameRequest.players.push(this.participants[0], this.participants[1]);
     }
     else if(numberOfPlayers == 3){
@@ -80,6 +92,14 @@ export class IndexComponent implements OnInit {
     else{
       console.log("No Participants found");
     }
+  }
 
+  getScores(){
+
+    if(this.game.id){
+      this.gameService.getScoresByGameId(this.game.id).subscribe(response => {
+        this.scores = response;
+      });
+    }
   }
 }
