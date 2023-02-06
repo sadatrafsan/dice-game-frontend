@@ -99,6 +99,7 @@ export class IndexComponent implements OnInit {
     if(this.game.id){
       this.gameService.getScoresByGameId(this.game.id).subscribe(response => {
         this.scores = response;
+        console.log(response);
       });
     }
   }
