@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {PlayerService} from "../../service/player.service";
 import {PlayerResponse} from "../../dto/response/player-response";
-import {Router} from "@angular/router";
+import {GameRequest} from "../../dto/request/game-request";
+import {GameService} from "../../service/game.service";
+import {GameResponse} from "../../dto/response/game-response";
 
 
 @Component({
@@ -13,11 +15,17 @@ export class IndexComponent implements OnInit {
 
   players: PlayerResponse[] = [];
   participants: any = []
+  gameRequest!: GameRequest;
+  game!: GameResponse;
 
   constructor(private playerService: PlayerService,
-              private router: Router) { }
+              private gameService:GameService) { }
 
   ngOnInit(): void {
+    this.gameRequest = {
+      players: [],
+      highestPoint: 0
+    };
     this.getPlayers();
   }
 
@@ -47,27 +55,31 @@ export class IndexComponent implements OnInit {
 
     const numberOfPlayers = this.participants.length;
 
-    if(numberOfPlayers == 2){
-      const player1 = this.participants[0];
-      const player2 = this.participants[1];
+    this.gameRequest.highestPoint = 6;
 
-      this.router.navigate(['/game'], {queryParams: {p1: player1, p2:player2, point:25}});
+    if(numberOfPlayers == 2){
+
+      this.gameRequest.players.push(this.participants[0], this.participants[1]);
     }
     else if(numberOfPlayers == 3){
-      const player1 = this.participants[0];
-      const player2 = this.participants[1];
-      const player3 = this.participants[2];
-      this.router.navigate(['/game'], {queryParams: {p1: player1, p2:player2, p3:player3, point:25}});
+      this.gameRequest.players.push(this.participants[0], this.participants[1], this.participants[2]);
     }
     else if(numberOfPlayers == 4){
-      const player1 = this.participants[0];
-      const player2 = this.participants[1];
-      const player3 = this.participants[2];
-      const player4 = this.participants[3];
-      this.router.navigate(['/game'], {queryParams: {p1: player1, p2:player2, p3:player3, p4:player4, point:25}});
+      this.gameRequest.players.push(this.participants[0], this.participants[1], this.participants[2], this.participants[3]);
     }
     else {
       console.log('Error!');
     }
+
+    if(this.gameRequest.players.length >= 2 && this.gameRequest.highestPoint > 0){
+      this.gameService.startGame(this.gameRequest).subscribe(response => {
+        this.game = response;
+        console.log(this.game);
+      });
+    }
+    else{
+      console.log("No Participants found");
+    }
+
   }
 }
